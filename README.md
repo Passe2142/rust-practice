@@ -60,6 +60,4 @@ I will keep adding more!
 40. `func run`: Perform more advanced CSV processing, extracting specific fields (city, state, population, latitude, longitude) and handling missing data gracefully.
 41. `func charter`: Example related to charters.
 
-Feel free to explore the code in `practices.rs` to deepen your understanding of Rust programming. If you have any questions or improvements, contributions are welcome!
 
-Happy coding!
