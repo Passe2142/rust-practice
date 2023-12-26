@@ -53,11 +53,11 @@ I will keep adding more!
 
 ### CSV Handling and Builders
 35. `func create_strange_csv`: Create a custom CSV file.
-36. `func run_0`: Running a basic example.
-37. `func run_basic`: Basic usage of a Rust function.
-38. `func run_headers`: Running with headers.
-39. `func run_custom_builder`: Customizing a builder.
-40. `func run`: General running example.
+36. `func run_0`: Run a basic example of reading a CSV file specified
+37. `func run_basic`: Demonstrate basic usage of a Rust function to read and print records from a CSV file.
+38. `func run_headers`: Read CSV records from standard input without treating the first row as headers.
+39. `func run_custom_builder`: Customize the CSV reader using the builder pattern, setting options like delimiter, double-quote behavior, escape character, flexibility, and comments.
+40. `func run`: Perform more advanced CSV processing, extracting specific fields (city, state, population, latitude, longitude) and handling missing data gracefully.
 41. `func charter`: Example related to charters.
 
 Feel free to explore the code in `practices.rs` to deepen your understanding of Rust programming. If you have any questions or improvements, contributions are welcome!
