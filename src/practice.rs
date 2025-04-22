@@ -1,6 +1,7 @@
-#![allow(dead_code, unused)]
+#![allow(dead_code)]
 // Standard Library Imports
 use std::error::Error;
+use std::string;
 use std::fs::{self, FileType, File, remove_file, rename};
 use std::io::{self, BufReader, BufRead, prelude::*, Read, Write, stdin};
 use std::path::Path;
@@ -12,34 +13,31 @@ use std::str::{SplitWhitespace, Chars};
 use std::sync::{Arc, Mutex};
 use std::{f64::consts::PI, f32::consts::E};
 use std::collections::{HashSet, HashMap, hash_map, btree_map::RangeMut};
+use crate::words::*;
 
 // Third-Party Library Imports
 use polars::prelude::{DataFrame, CsvReader, SerReader};
 use serde::{Deserialize, Serialize};
 use csv::{Reader, Writer};
 use plotters::prelude::*;
-use polars::*;
 use rand::seq::{SliceRandom, index};
 use rand::{Rng, rngs::ThreadRng};
-use crate::words::{get_words, get_questions_and_answers};
 
 pub fn data_types(a: i32, b: i32, c: bool, d: &str ){
-
-    return {
             let _x:i32 = a + b;
             if c {
                 print!("Ooga")
             }
             "\n";
             print!("{} and the boolean is {} & a + b = {} ", d, !c, _x)
-        }
-    }
+}
+
 
 pub fn circle_radius() {
     println!("Please enter a radius:");
     let mut input = String::new();
 
-    io::stdin().read_line(&mut input).expect("Failed to read the line");
+    stdin().read_line(&mut input).expect("Failed to read the line");
     let radius: Result<f64, _> = input.trim().parse();
 
     match radius {
@@ -86,7 +84,7 @@ pub fn circle_radius() {
     }
 
     pub fn floating_point() {
-            assert!(0.1 as f32 + 0.2 as f32 == 0.3_f32);
+            assert_eq!(0.1f32 + 0.2f32, 0.3_f32);
             println!("Success!");
     }
 
@@ -156,8 +154,8 @@ pub fn circle_radius() {
     pub fn guessing_game(){
 
         let words:[&str;100] = get_words();
-        let mut rng: ThreadRng = rand::thread_rng();
-        let random_number: u8 = rng.gen_range(0..=99);
+        let mut rng: ThreadRng = rand::rng();
+        let random_number: u8 = rng.random_range(0..=99);
         let mut attempts: u8 = 5;
 
         println!("Welcome to the guessing game!");
@@ -165,8 +163,8 @@ pub fn circle_radius() {
 
         while attempts > 0 {
             let random_word:&str = words [random_number as usize];
-            let mut input:String = String::new();
-            io::stdin().read_line(&mut input).expect("Failed to read the line");
+            let mut input:String= String::new();
+            stdin().read_line(&mut input).expect("Failed to read the line");
             let input: Result<String, _> = input.trim().parse();
             if input != random_word.parse() && attempts > 0{
                 attempts -= 1;
@@ -177,7 +175,7 @@ pub fn circle_radius() {
                     3 => println!("Hint 2: The word ends with '{}'", &random_word.chars().last().unwrap()),
                     2 => println!("Hint 3: The word has at least '{}' characters.", random_word.chars().count()),
                     1 => {
-                        let index: usize = rand::thread_rng().gen_range(1..random_word.len() - 1);
+                        let index: usize = rand::rng().random_range(1..random_word.len() - 1);
                         let random_char: char = random_word.chars().nth(index).unwrap();
                         println!("Hint 4: The word contains the letter '{}'.", random_char);}
                     _ => {} 
@@ -187,7 +185,7 @@ pub fn circle_radius() {
                 println!("You guessed right!");
                 break;
             }
-            println!("The word is (debuggin/test): {}", random_word);
+            println!("The word is (debugging/test): {}", random_word);
         }
     }
 
@@ -203,7 +201,7 @@ pub fn circle_radius() {
         println!("Enter an ammount of numbers (or 'done' to finsih):");
 
         input.clear();
-        io::stdin().read_line( &mut input).expect("Failed to read the line.");
+        stdin().read_line(&mut input).expect("Failed to read the line.");
 
         if input.trim() == "done" {break;}
 
@@ -237,7 +235,7 @@ pub fn circle_radius() {
             loop {
                 input.clear();
 
-                io::stdin().read_line(&mut input).expect("Failed to read the line.");
+                stdin().read_line(&mut input).expect("Failed to read the line.");
                 input = input.trim().to_string();
                 if input == "done"{break;}
                 match input.trim().parse::<i64>() {
@@ -267,7 +265,7 @@ pub fn circle_radius() {
             loop {
                 input.clear();
         
-                io::stdin()
+                stdin()
                     .read_line(&mut input)
                     .expect("Failed to read the line.");
                 input = input.trim().to_string();
@@ -299,7 +297,7 @@ pub fn circle_radius() {
             println!("Insert Integers into the Hash Set A ('done' to finish): ");
             loop {
                 input.clear();
-                io::stdin().read_line(&mut input).expect("Failed to read the line.");
+                stdin().read_line(&mut input).expect("Failed to read the line.");
                 if input.trim() == "done" {
                     break;
                 }
@@ -318,7 +316,7 @@ pub fn circle_radius() {
             println!("Insert Strings into the Hash Set C ('done' to finish): ");
             loop {
                 input.clear();
-                io::stdin().read_line(&mut input).expect("Failed to read the line.");
+                stdin().read_line(&mut input).expect("Failed to read the line.");
                 if input.trim() == "done" {
                     break;
                 }
@@ -344,9 +342,9 @@ pub fn circle_radius() {
             println!("Write some text('END' to finish): ");
             loop {
                 let mut input : String = String:: new();
-                io::stdin().read_line(&mut input).expect("Failed to read input.");
+                stdin().read_line(&mut input).expect("Failed to read input.");
                 if input.trim().to_lowercase() == "end" {break;}
-                let words: std::str::SplitWhitespace<'_> = input.split_whitespace();
+                let words: SplitWhitespace<'_> = input.split_whitespace();
                 for word in words {
                     unique_words.insert(word.to_string());
                     let count = word_frequencies.entry(word.to_string()).or_insert(0);
@@ -364,7 +362,7 @@ pub fn circle_radius() {
             println!("Please enter 2 words (comma-separated): ");
         
             let mut input = String::new();
-            io::stdin().read_line(&mut input).expect("Failed to read line.");
+            stdin().read_line(&mut input).expect("Failed to read line.");
             let words_input: Vec<&str> = input.trim().split(",").collect();
         
             if words_input.len() != 2 {
@@ -398,7 +396,7 @@ pub fn circle_radius() {
             println!("Please enter a password: ");
 
             let mut input = String::new();
-            io::stdin().read_line(&mut input).expect("Failed to read line.");
+            stdin().read_line(&mut input).expect("Failed to read line.");
 
 
             let clean_input = input.trim().to_ascii_lowercase();
@@ -438,7 +436,7 @@ pub fn circle_radius() {
             println!("3- Search contact.");
             println!("4- Exit.");
 
-            io::stdin().read_line(&mut options).expect("Failed to read line.");
+            stdin().read_line(&mut options).expect("Failed to read line.");
             match options.trim().parse::<u8>(){
                 Ok(parsed_option) => {
                     match parsed_option {
@@ -446,9 +444,9 @@ pub fn circle_radius() {
                     1=> {
                         loop {
                             println!("Please enter a new contact name (empty to finish): ");
-                            io::stdin().read_line(&mut contact_name).expect("Failed to read line.");
+                            stdin().read_line(&mut contact_name).expect("Failed to read line.");
                             println!("Please enter a the contact phone number: ");
-                            io::stdin().read_line(&mut contact_phone).expect("Failed to read line.");
+                            stdin().read_line(&mut contact_phone).expect("Failed to read line.");
                                 if contact_name.trim().to_string().is_empty() || contact_phone.is_empty() {break;}
                                     match contact_phone.trim().parse::<u32>() {
                                         Ok(parsed_input) => {
@@ -468,7 +466,7 @@ pub fn circle_radius() {
                         }
                     2 => {
                             println!("Please enter the contact name to remove: ");
-                            io::stdin().read_line(&mut contact_name).expect("Failed to read line.");
+                            stdin().read_line(&mut contact_name).expect("Failed to read line.");
                             phone_book.remove(&contact_name.trim().to_ascii_lowercase());
                             println!("Contact removed.");
                             options.clear();
@@ -476,7 +474,7 @@ pub fn circle_radius() {
                         }
                     3 => {
                         println!("Please enter the contact name to search: ");
-                        io::stdin().read_line(&mut contact_name).expect("Failed to read line");
+                        stdin().read_line(&mut contact_name).expect("Failed to read line");
                         if let Some(contact) = phone_book.get(&contact_name.trim().to_ascii_lowercase()) {
                             println!("Contact found: {:?}", contact);
                         } else {
@@ -507,7 +505,7 @@ pub fn circle_radius() {
     pub fn user_input() {
         let mut input: String = String::new();
         println!("Please enter an input:");
-        io::stdin().read_line(&mut input).expect("Failed to read the line.");
+        stdin().read_line(&mut input).expect("Failed to read the line.");
         let cleaned_input: String = input.trim().to_ascii_lowercase();
         let reversed_input: String = cleaned_input.chars().rev().collect();
     
@@ -517,8 +515,8 @@ pub fn circle_radius() {
             println!("Your word is not a palindrome! {:?}", cleaned_input);
         }
         println!("The word {} : has {} characters.", cleaned_input, cleaned_input.len());
-        let mut rng = rand:: thread_rng();
-        let random_word = get_words()[rng.gen_range(0..get_words().len())];
+        let mut rng = rand:: rng();
+        let random_word = get_words()[rng.random_range(0..get_words().len())];
         if cleaned_input ==  random_word  {
             println!("Your word got changed to: {}",cleaned_input.replace(&cleaned_input, random_word));
             println!("The word {} : has {} characters.", cleaned_input, cleaned_input.len());
@@ -545,7 +543,7 @@ pub fn circle_radius() {
         let mut player: String = String:: new();
         println!("Welcome to the Pop Quiz Game!!");
         println!("Enter your name: ");
-        io::stdin().read_line(&mut player).expect("Failed to read line.");
+        stdin().read_line(&mut player).expect("Failed to read line.");
         if !table_scores.contains_key(&player) {
             table_scores.insert(player.clone(), score.clone());
         }
@@ -555,7 +553,7 @@ pub fn circle_radius() {
         println!("1 - Quiz!");
         println!("2 - Score Table.");
         println!("3 - Exit.");
-        io::stdin().read_line(&mut options).expect("Failed to read line.");
+        stdin().read_line(&mut options).expect("Failed to read line.");
 
         match options.trim().parse::<u8>() {
             Ok(parsed_options) => {            
@@ -570,7 +568,7 @@ pub fn circle_radius() {
 
                         println!("Choose your answer (enter the number):");
                         let mut answer_input = String::new();
-                        io::stdin().read_line(&mut answer_input).expect("Failed to read line");
+                        stdin().read_line(&mut answer_input).expect("Failed to read line");
                         let answer_index: usize = match answer_input.trim().parse() {
                             Ok(num) => num,
                             Err(_) => {
@@ -697,13 +695,13 @@ pub fn circle_radius() {
         println!("{}",(0.1+0.2));
     }
 
-    pub fn lifetimes_and_references<'a>(x: &'a u8) -> &'a u8  {
+    pub fn lifetimes_and_references(x: &u8) -> &u8 {
         let var:&u8 = x;
         let mut n : &u8 = &1;
         x.max(n)
     }
 
-    pub fn passing_x<'a>(y: &'a u8) -> &'a u8{
+    pub fn passing_x(y: &u8) -> &u8 {
         lifetimes_and_references(y)
 
     }
@@ -776,7 +774,7 @@ pub fn circle_radius() {
     }
 
 
-    pub fn file_create() -> std::io::Result<()>{
+    pub fn file_create() -> io::Result<()>{
             // Open or create a CSV file
         let mut file: File = File::create("my_data.csv")?;
 
@@ -911,7 +909,7 @@ pub fn circle_radius() {
     pub fn run_0() -> Result<(), Box<dyn Error>> {
         let file_path = get_first_arg()?;
         let file = File::open(file_path)?;
-        let mut rdr = csv::Reader::from_reader(file);
+        let mut rdr = Reader::from_reader(file);
         for result in rdr.records() {
             let record = result?;
             println!("{:?}", record);
@@ -921,7 +919,7 @@ pub fn circle_radius() {
     pub fn run_basic() -> Result<(), Box<dyn Error>> {
         let file_path:  OsString  = get_first_arg()?;
         let file = File::open(file_path)?;
-        let mut rdr = csv::Reader::from_reader(file);
+        let mut rdr = Reader::from_reader(file);
         for result in rdr.records() {
             let record = result?;
             println!("{:?}", record);
@@ -932,7 +930,7 @@ pub fn circle_radius() {
     fn run_headers() -> Result<(), Box<dyn Error>> {
         let mut rdr = csv::ReaderBuilder::new()
             .has_headers(false)
-            .from_reader(io::stdin());
+            .from_reader(stdin());
         for result in rdr.records() {
             let record = result?;
             println!("{:?}", record);
@@ -948,7 +946,7 @@ pub fn circle_radius() {
             .escape(Some(b'\\'))
             .flexible(true)
             .comment(Some(b'#'))
-            .from_reader(io::stdin());
+            .from_reader(stdin());
         for result in rdr.records() {
             let record: csv::StringRecord = result?;
             println!("{:?}", record);
@@ -957,7 +955,7 @@ pub fn circle_radius() {
     }
 
     pub fn run() -> Result<(), Box<dyn Error>> {
-        let mut rdr: Reader<io::Stdin> = csv::Reader::from_reader(io::stdin());
+        let mut rdr: Reader<io::Stdin> = Reader::from_reader(stdin());
         for result in rdr.records() {
             let record = result?;
     
