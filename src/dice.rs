@@ -5,7 +5,7 @@ struct Dice {
 impl Dice {
 
     pub fn new (sides: u8) -> Dice {
-        Dice{sides};
+        Dice{sides}
     }
 
     pub fn roll(nRolls:u8) {

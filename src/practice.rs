@@ -1,27 +1,6 @@
 #![allow(dead_code)]
-// Standard Library Imports
-use std::error::Error;
-use std::string;
-use std::fs::{self, FileType, File, remove_file, rename};
-use std::io::{self, BufReader, BufRead, prelude::*, Read, Write, stdin};
-use std::path::Path;
-use std::fmt::DebugTuple;
-use std::ops::{Index, Add};
-use std::thread::Thread;
-use std::{option, thread, process, env, ffi::OsString};
-use std::str::{SplitWhitespace, Chars};
-use std::sync::{Arc, Mutex};
-use std::{f64::consts::PI, f32::consts::E};
-use std::collections::{HashSet, HashMap, hash_map, btree_map::RangeMut};
-use crate::words::*;
 
-// Third-Party Library Imports
-use polars::prelude::{DataFrame, CsvReader, SerReader};
-use serde::{Deserialize, Serialize};
-use csv::{Reader, Writer};
-use plotters::prelude::*;
-use rand::seq::{SliceRandom, index};
-use rand::{Rng, rngs::ThreadRng};
+use crate::imports::*;
 
 pub fn data_types(a: i32, b: i32, c: bool, d: &str ){
             let _x:i32 = a + b;
@@ -97,7 +76,7 @@ pub fn circle_radius() {
             counter +=i;
         }
         println!("Factorial of {}! = {}.", a,factorial);
-        println!("Contador: {}.", counter);
+        println!("Counter: {}.", counter);
     }
 
     //
@@ -198,7 +177,7 @@ pub fn circle_radius() {
 
         while input.trim()!=("done"){
 
-        println!("Enter an ammount of numbers (or 'done' to finsih):");
+        println!("Enter an amount of numbers (or 'done' to finish):");
 
         input.clear();
         stdin().read_line(&mut input).expect("Failed to read the line.");
@@ -524,7 +503,7 @@ pub fn circle_radius() {
     }
 
 
-    pub fn questions_game(){ //Keeping different scores for each players.
+    pub fn questions_game(){ //Keeping different scores for each player.
         let mut score: i8 = 0;
         let mut table_scores: HashMap<String, i8> = HashMap:: new();
         let mut answer: String = String::new();
@@ -656,7 +635,7 @@ pub fn circle_radius() {
     
     // Transfer ownership of the string to s2
     let s2 = s1;
-    //println!("s1: {}", s1); Transfered ownership to s2, will throw compile error
+    //println!("s1: {}", s1); Transferred ownership to s2, will throw compile error
 
     let s1 = "Hello";
     let s2 = s1; // s1 is copied to s2
@@ -687,11 +666,11 @@ pub fn circle_radius() {
         let u: &str = borrowed_from_original.as_str();
         let x = original.as_str();
         let struct_original = MyStruct{data: 10};
-        let struc_copy = struct_original;
+        let struct_copy = struct_original;
         println!("Original:{}", original);
         println!("Borrow from Orginal:{}", borrowed_from_original);
         println!("x:{}", x);
-        println!("Stuct Copy Data:{}", struc_copy.data);
+        println!("Struct Copy Data:{}", struct_copy.data);
         println!("{}",(0.1+0.2));
     }
 
@@ -989,7 +968,7 @@ pub fn circle_radius() {
         chart_builder
             .margin(5) 
             .set_left_and_bottom_label_area_size(35)
-            .caption("Figure title or caption", ("Calibri", 20, FontStyle::Italic, &RED)
+            .caption("Figure title or caption", ("Calibre", 20, FontStyle::Italic, &RED)
             .into_text_style(&drawing_area));
 
         let mut chart_context: ChartContext<'_, BitMapBackend<'_>, 

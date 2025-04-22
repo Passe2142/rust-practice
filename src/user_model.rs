@@ -1,10 +1,13 @@
+use std::fs::File;
+use crate::imports::DataFrame;
+use crate::practice::run_basic;
 
 struct  UserModel{
     user_name: String,
     email: String,
     id: u32,
     password: String,
-    file: std::result::Result<File, std::io::Error>,
+    file: Result<File, std::io::Error>,
     data: DataFrame,
 }
 
@@ -18,8 +21,8 @@ impl UserModel {
 
 
 pub fn file_app() {
-    let file_path: &str = "uspop.csv";
-    let city_data: std::result::Result<File, std::io::Error> = File::open(file_path);
+    let file_path: &str = "us-pop.csv";
+    let city_data: Result<File, std::io::Error> = File::open(file_path);
 
     let df: DataFrame = DataFrame::default();
 
